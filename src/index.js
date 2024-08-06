@@ -39,17 +39,40 @@ const MORSE_TABLE = {
 
 function decode(expr) {
     const sliceExpr = (expr) => {
-  const arr = [];
-  for (let i = 0; i < expr.length; i += 10) {
-    const slice = expr.slice(i, i + 10);
-    arr.push(slice);
-  }
-  return arr.map(element.toString('');
-};
-    const decodeExpr = (arr) => { // Дописать эту ебаторию
-        if (arr.map()
-    }
+        let arr = [];
+        for (let i = 0; i < expr.length; i += 10) {
+            const slice = expr.slice(i, i + 10);
+            arr.push(slice);
+        }
+        return arr;
+    };
 
+    const decodeExpr = (arr) => {
+        const numsToMorse = (arr) => {
+            let morseCode = '';
+
+            arr.forEach(element => {
+                element = element.replace(/10/g, '.');
+                element = element.replace(/11/g, '-');
+                element = element.replace(/\*\*\*\*\*\*\*\*\*\*/g, ' ');
+                element = element.replace(/0/g, '');
+
+                morseCode += element + ' ';
+            });
+            return morseCode.trim();
+        };
+        return numsToMorse(arr);
+    };
+
+    const arr = sliceExpr(expr);
+    const morseToLetters = decodeExpr(arr);
+    let result = morseToLetters;
+
+    for (const [key, value] of Object.entries(MORSE_TABLE)) {
+        const regex = new RegExp(key, 'g');
+        result = result.replace(regex, value);
+    }
+    return result; // ОНО ВСЕ ЕЩЕ НЕ РАБОТАЕТ!!!!!!!!!!!!!
 };
 
 module.exports = {
