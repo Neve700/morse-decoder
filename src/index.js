@@ -54,7 +54,7 @@ function decode(expr) {
             arr.forEach(element => {
                 element = element.replace(/10/g, '.');
                 element = element.replace(/11/g, '-');
-                element = element.replace(/\*\*\*\*\*\*\*\*\*\*/g, ' ');
+                element = element.replace(/\*\*\*\*\*\*\*\*\*\*/g, '');
                 element = element.replace(/0/g, '');
 
                 morseCode += element + ' ';
@@ -65,14 +65,19 @@ function decode(expr) {
     };
 
     const arr = sliceExpr(expr);
-    const morseToLetters = decodeExpr(arr);
-    let result = morseToLetters;
+    const morseCode = decodeExpr(arr);
+    let result = '';
 
-    for (const [key, value] of Object.entries(MORSE_TABLE)) {
-        const regex = new RegExp(key, 'g');
-        result = result.replace(regex, value);
-    }
-    return result; // ОНО ВСЕ ЕЩЕ НЕ РАБОТАЕТ!!!!!!!!!!!!!
+    const morseSymbols = morseCode.split(' ');
+    
+    morseSymbols.forEach(symbol => {
+        if (symbol in MORSE_TABLE) {
+            result += MORSE_TABLE[symbol];
+        } else {
+            result += ' ';
+        }
+    });
+    return result.trim();
 };
 
 module.exports = {
